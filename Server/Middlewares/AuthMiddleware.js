@@ -3,12 +3,14 @@ export const authMiddleware = (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token)
-    return res.status(401).json({ message: `Unauthorized`, success: false });
+    return res
+      .status(401)
+      .json({ message: `User Not Logged In`, success: false });
 
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     if (!decodedToken.id) {
-      return res.status(401).json({ message: `Unauthorized`, success: false });
+      return res.status(401).json({ message: `Invalid Token`, success: false });
     }
 
     req.body.userID = decodedToken.id;
